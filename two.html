@@ -38,7 +38,6 @@
             }
                 
             rows = links.eq(index).next( 'table' ).next( 'table' ).next( 'table' ).find('tr');
-            console.log( links.eq(index).attr( 'id' ) + ' ' + rows.length.toString() + 'times:' + (scrollBaseTime + rows.length * scrollLineTime).toString() + ',' + stopTime.toString() );
             
             $('html, body', txt).eq(0).animate({
                 scrollTop: links.eq(index).offset().top
@@ -47,7 +46,7 @@
             });
         }
                 
-        function prepareIFrame( obj, i ) {
+        function prepareIFrame( obj ) {
             obj.on( 'load', function() {
                 // Erase extra elements
                 var txt = obj.contents(); 
@@ -55,7 +54,7 @@
                 $('#reporttop', txt).remove();
                 
                 // scroll to all link objects
-                MyAnimate( obj, txt, $('a', txt), i );
+                setTimeout( MyAnimate, stopTime, obj, txt, $('a', txt), 1 );
             }) ;
         }
         
@@ -64,8 +63,8 @@
         }
         
         $(function () {
-            prepareIFrame( $('#leftFRM'), 30 );
-            prepareIFrame( $('#rightFRM'), 27 );
+            prepareIFrame( $('#leftFRM') );
+            prepareIFrame( $('#rightFRM') );
 
             doRefresh( $('#leftFRM'), 'res1.html' );
             doRefresh( $('#rightFRM'), 'res2.html' );
