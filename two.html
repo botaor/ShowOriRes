@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>COC - Results POM 2016</title>
+	<style>
+        html,body { height: 100%; margin: 0px; padding: 0px; }
+		#left { width:50%; height:100%; float:left }
+		#right { width:50%; height:100%; float:left }
+        .noScrolling { overflow: hidden; width: 100%; display:block; height:100%; border: none }
+	</style>
+</head>
+<body>
+    <!--div id="left"><iframe scrolling="no" class="noScrolling" id="leftFRM" src="res2.html"></iframe></div>
+    <div id="right"><iframe scrolling="no" class="noScrolling" id="rightFRM" src="Samples/resultadosSabadoPorEscalao.html"></iframe></div-->
+    <div id="left"><iframe scrolling="no" class="noScrolling" id="leftFRM" src=""></iframe></div>
+    <div id="right"><iframe scrolling="no" class="noScrolling" id="rightFRM" src=""></iframe></div>
+
+    <!--script src="http://code.jquery.com/jquery-2.1.4.min.js"></script-->
+    <script src="Scripts/jquery-2.1.4.min.js"></script>
+
+    <script>
+        function IFrameRefresh() {
+            document.getElementById("rightFRM").src = "res2.html";
+            alert("refresh!");
+        }
+        
+        function MyStart() {
+            //alert("Hello world!");
+            
+            $('#navigation', $('#rightFRM').contents()).remove();
+            $('#reporttop', $('#rightFRM').contents()).remove();
+            $('#navigation', $('#leftFRM').contents()).remove();
+            $('#reporttop', $('#leftFRM').contents()).remove();
+
+            ct = $('#leftFRM').contents();
+            $('html, body', $('#leftFRM').contents()).animate({
+                scrollTop: $('#H45', ct).offset().top
+            }, 5000);
+        }
+        
+        $(function () {
+            document.getElementById("rightFRM").src = "res1.html";
+            $('#rightFRM').on( 'load', function() {
+                $('#navigation', $('#rightFRM').contents()).remove();
+                $('#reporttop', $('#rightFRM').contents()).remove();
+            }) ;
+
+            document.getElementById("leftFRM").src = "res2.html";
+            $('#leftFRM').on( 'load', function() {
+                $('#navigation', $('#leftFRM').contents()).remove();
+                $('#reporttop', $('#leftFRM').contents()).remove();
+            }) ;
+        });
+    </script>
+</body>
+</html>
