@@ -11,18 +11,19 @@
 	</style>
 </head>
 <body>
-    <!--div id="left"><iframe scrolling="no" class="noScrolling" id="leftFRM" src="res2.html"></iframe></div>
-    <div id="right"><iframe scrolling="no" class="noScrolling" id="rightFRM" src="Samples/resultadosSabadoPorEscalao.html"></iframe></div-->
     <div id="left"><iframe scrolling="no" class="noScrolling" id="leftFRM" src=""></iframe></div>
     <div id="right"><iframe scrolling="no" class="noScrolling" id="rightFRM" src=""></iframe></div>
 
-    <!--script src="http://code.jquery.com/jquery-2.1.4.min.js"></script-->
     <script src="Scripts/jquery-2.1.4.min.js"></script>
-
     <script>
-        function IFrameRefresh() {
-            document.getElementById("rightFRM").src = "res2.html";
-            alert("refresh!");
+        function IFrameRefresh( obj, url ) {
+            obj.attr('src',url);
+            obj.on( 'load', function() {
+                // Erase extra elements
+                var txt = obj.contents(); 
+                $('#navigation', txt).remove();
+                $('#reporttop', txt).remove();
+            }) ;
         }
         
         function MyStart() {
@@ -40,17 +41,8 @@
         }
         
         $(function () {
-            document.getElementById("rightFRM").src = "res1.html";
-            $('#rightFRM').on( 'load', function() {
-                $('#navigation', $('#rightFRM').contents()).remove();
-                $('#reporttop', $('#rightFRM').contents()).remove();
-            }) ;
-
-            document.getElementById("leftFRM").src = "res2.html";
-            $('#leftFRM').on( 'load', function() {
-                $('#navigation', $('#leftFRM').contents()).remove();
-                $('#reporttop', $('#leftFRM').contents()).remove();
-            }) ;
+            IFrameRefresh( $('#leftFRM'), 'res1.html' );
+            IFrameRefresh( $('#rightFRM'), 'res2.html' );
         });
     </script>
 </body>
