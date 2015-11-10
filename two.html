@@ -16,6 +16,10 @@
 
     <script src="Scripts/jquery-2.1.4.min.js"></script>
     <script>
+        var scrollBaseTime = 5 * 1000;
+        var scrollLineTime = 500;
+        var stopTime = 10 * 1000;
+        
         function MyAnimate( obj, txt, links, index ) {
             if( index >= links.length )
             {
@@ -24,10 +28,13 @@
                 return ;
             }
                 
+            rows = links.eq(index).next( 'table' ).next( 'table' ).next( 'table' ).find('tr');
+            console.log( links.eq(index).attr( 'id' ) + ' ' + rows.length.toString() + 'times:' + (scrollBaseTime + rows.length * scrollLineTime).toString() + ',' + stopTime.toString() );
+            
             $('html, body', txt).eq(0).animate({
                 scrollTop: links.eq(index).offset().top
-            }, 5000, function() {
-                setTimeout( MyAnimate, 2000, obj, txt, links, index+1 );
+            }, scrollBaseTime + rows.length * scrollLineTime, function() {
+                setTimeout( MyAnimate, stopTime, obj, txt, links, index+1 );
             });
         }
                 
