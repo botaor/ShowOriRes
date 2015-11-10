@@ -16,22 +16,22 @@
 
     <script src="Scripts/jquery-2.1.4.min.js"></script>
     <script>
-        function MyAnimate( txt, links, index ) {
+        function MyAnimate( obj, txt, links, index ) {
             if( index >= links.length )
             {
-                alert( 'end') ;
+                // provoque refresh
+                obj.attr('src', obj.attr('src') );
                 return ;
             }
                 
             $('html, body', txt).eq(0).animate({
                 scrollTop: links.eq(index).offset().top
             }, 5000, function() {
-                setTimeout( MyAnimate, 2000, txt, links, index+1 );
+                setTimeout( MyAnimate, 2000, obj, txt, links, index+1 );
             });
         }
                 
-        function IFrameRefresh( obj, url, i ) {
-            obj.attr('src',url);
+        function prepareIFrame( obj, i ) {
             obj.on( 'load', function() {
                 // Erase extra elements
                 var txt = obj.contents(); 
@@ -39,13 +39,20 @@
                 $('#reporttop', txt).remove();
                 
                 // scroll to all link objects
-                MyAnimate( txt, $('a', txt), i );
+                MyAnimate( obj, txt, $('a', txt), i );
             }) ;
         }
         
+        function doRefresh( obj, url ) {
+            obj.attr('src',url);
+        }
+        
         $(function () {
-            IFrameRefresh( $('#leftFRM'), 'res1.html', 30 );
-            IFrameRefresh( $('#rightFRM'), 'res2.html', 27 );
+            prepareIFrame( $('#leftFRM'), 30 );
+            prepareIFrame( $('#rightFRM'), 27 );
+
+            doRefresh( $('#leftFRM'), 'res1.html' );
+            doRefresh( $('#rightFRM'), 'res2.html' );
         });
     </script>
 </body>
