@@ -17,7 +17,7 @@ The names of the pages involved will be defined at a later stage.
 
 
 ## Problems
-In a first approach the page uses IFRames to include the results page. This can cause security issues with some browsers.
+In a first approach the page uses IFrames to include the results page. This can cause security issues with some browsers.
 
 In the first version it works fine in Internet Explorer 11 and Firefox 42. But it does not work in Chrome 46.
 
@@ -27,7 +27,18 @@ No installation should be necessary.
 
 
 ## Configuration
-Will be decided later.
+Here are the things that need to be done once you have all the hardware setup. This is necessary since the resolution of the display will differ, and also their ability to display all the information.
+
+### Font size
+The font size must be defined by this page, since MT does not take it into account.
+
+Go to the function `prepareIFrame` locate the lines that change the font and put there the values you want.
+
+### MT results export
+The size of the columns must be set on the MT software. Since that software does not take the font size into account when publishing results, we just have to keep trying until we get a good enough result.
+
+### Page margin
+Some TVs might cut a little of the page on the left and on the right. To account for this set the margin of the `body` tag on the CSS styles at the top of the page. 
 
 
 ## Dependencies
