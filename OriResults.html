@@ -58,7 +58,7 @@
             });
         }
                 
-        function prepareIFrame( obj ) {
+        function prepareIFrame( obj, url ) {
             obj.on( 'load', function() {
                 // Erase extra elements
                 var txt = obj.contents(); 
@@ -106,18 +106,14 @@
                 // start scrolling
                 MyAnimate( obj, txt, scrollPositions, 0 );
             }) ;
-        }
-        
-        function doRefresh( obj, url ) {
+
+            // load frame
             obj.attr('src',url);
         }
         
         $(function () {
-            prepareIFrame( $('#leftFRM') );
-            prepareIFrame( $('#rightFRM') );
-
-            doRefresh( $('#leftFRM'), 'res1.html' );
-            doRefresh( $('#rightFRM'), 'res2.html' );
+            prepareIFrame( $('#leftFRM'), 'res1.html' );
+            prepareIFrame( $('#rightFRM'), 'res2.html' );
         });
     </script>
 </body>
