@@ -36,8 +36,9 @@ SOFTWARE.
 	<style>
         html { height: 100%; margin: 0px; padding: 0px; }
         body { height: 100%; margin: 0px 20px; padding: 0px; }
-		.frameHeader { width:50%; height:25px; float:left; text-align: center; font: 25px Arial; padding: 15px 0px }
-		.info { width:50%; height: calc(100% - 55px); float:left }
+		.frameHeader { width:50%; height:25px; float:left; text-align: center; font: 25px Arial; padding-top: 15px; background-color: #ebffeb }
+		.classHeader { width:50%; height:25px; float:left; text-align: left; font: 20px Arial; background-color: #ebffeb }
+		.info { width:50%; height: calc(100% - 40px - 25px); float:left }
         .noScrolling { overflow: hidden; width: 100%; display:block; height:100%; border: none }
 	</style>
 </head>
@@ -47,6 +48,10 @@ SOFTWARE.
     </div>
     <div class="frameHeader">
         Damas/Women + Promoção/Open 
+    </div>
+    <div id="leftHdr" class="classHeader">
+    </div>
+    <div id="rightHdr" class="classHeader">
     </div>
     <div id="left" class="info"><iframe scrolling="no" class="noScrolling" id="leftFRM" src=""></iframe></div>
     <div id="right" class="info"><iframe scrolling="no" class="noScrolling" id="rightFRM" src=""></iframe></div>
@@ -61,7 +66,8 @@ SOFTWARE.
         scrollLineTime = 50;
         stopTime = 2 * 1000;
         
-        function StopPoint( position, delayWait, delayScroll ) {
+        function StopPoint( category, position, delayWait, delayScroll ) {
+            this.category = category;
             this.position = position;
             this.delayWait = delayWait;
             this.delayScroll = delayScroll;
@@ -70,7 +76,7 @@ SOFTWARE.
             }
         }
         
-        function MyAnimate( obj, txt, arr, index ) {
+        function MyAnimate( hdr, obj, txt, arr, index ) {
             if( index >= arr.length )
             {
                 // provoque refresh
@@ -81,11 +87,12 @@ SOFTWARE.
             $('html, body', txt).eq(0).animate({
                 scrollTop: arr[index].position
             }, arr[index].delayScroll, function() {
-                setTimeout( MyAnimate, arr[index].delayWait, obj, txt, arr, index+1 );
+                hdr.text( arr[index].category );
+                setTimeout( MyAnimate, arr[index].delayWait, hdr, obj, txt, arr, index+1 );
             });
         }
                 
-        function prepareIFrame( obj, url ) {
+        function prepareIFrame( hdr, obj, url ) {
             obj.on( 'load', function() {
                 // Erase extra elements
                 var txt = obj.contents(); 
@@ -106,6 +113,7 @@ SOFTWARE.
                 var lastRows = 0 ;
                 var n = 0 ;
                 var pos ;
+                var category = "";
                 $('a', txt).each(function(i){
                     if( lastRows > maxRows )
                     {
@@ -113,16 +121,20 @@ SOFTWARE.
                         rowsLeft = lastRows ;
                         while( rowsLeft > showRows * 2 ) {
                             pos += showRows * rowHeight ;
-                            scrollPositions[n++] = new StopPoint( pos, stopTime, scrollBaseTime + showRows * scrollLineTime ) ;
+                            scrollPositions[n++] = new StopPoint( category, pos, stopTime, scrollBaseTime + showRows * scrollLineTime ) ;
                             rowsLeft -= showRows ;
                         }
 
                         pos = $(this).offset().top ;
-                        scrollPositions[n++] = new StopPoint( pos - maxRows * rowHeight, stopTime, scrollBaseTime + lastRows * scrollLineTime ) ;
-                        scrollPositions[n++] = new StopPoint( pos, stopTime, scrollBaseTime + lastRows * scrollLineTime ) ;
+                        scrollPositions[n++] = new StopPoint( category, pos - maxRows * rowHeight, stopTime, scrollBaseTime + lastRows * scrollLineTime ) ;
+                        category = $(this).next( 'table' ).find( 'nobr' ).text() ;
+                        scrollPositions[n++] = new StopPoint( category, pos, stopTime, scrollBaseTime + lastRows * scrollLineTime ) ;
                     }
                     else
-                        scrollPositions[n++] = new StopPoint( $(this).offset().top, stopTime, scrollBaseTime + lastRows * scrollLineTime ) ;
+                    {
+                        category = $(this).next( 'table' ).find( 'nobr' ).text() ;
+                        scrollPositions[n++] = new StopPoint( category, $(this).offset().top, stopTime, scrollBaseTime + lastRows * scrollLineTime ) ;
+                    }
                         
                     lastPos = $(this).offset().top ;
                     lastRows = $(this).next( 'table' ).next( 'table' ).next( 'table' ).find('tr').length + 2;   //+2 for the header
@@ -131,7 +143,7 @@ SOFTWARE.
                 scrollPositions[0].delayScroll = 0 ;
 
                 // start scrolling
-                MyAnimate( obj, txt, scrollPositions, 0 );
+                MyAnimate( hdr, obj, txt, scrollPositions, 0 );
             }) ;
 
             // load frame
@@ -139,8 +151,8 @@ SOFTWARE.
         }
         
         $(function () {
-            prepareIFrame( $('#leftFRM'), 'res1.html' );
-            prepareIFrame( $('#rightFRM'), 'res2.html' );
+            prepareIFrame( $('#leftHdr'), $('#leftFRM'), 'res1.html' );
+            prepareIFrame( $('#rightHdr'), $('#rightFRM'), 'res2.html' );
         });
     </script>
 </body>
