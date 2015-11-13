@@ -29,21 +29,32 @@
         var scrollBaseTime = 5 * 1000;
         var scrollLineTime = 500;
         var stopTime = 10 * 1000;
+
+        scrollBaseTime = 1 * 1000;
+        scrollLineTime = 50;
+        stopTime = 2 * 1000;
         
-        function MyAnimate( obj, txt, links, index ) {
-            if( index >= links.length )
+        function StopPoint( position, delayWait, delayScroll ) {
+            this.position = position;
+            this.delayWait = delayWait;
+            this.delayScroll = delayScroll;
+            this.display = function() {
+                return position.toString() + ", " + delayWait.toString() + ", " + delayScroll.toString() ;
+            }
+        }
+        
+        function MyAnimate( obj, txt, arr, index ) {
+            if( index >= arr.length )
             {
                 // provoque refresh
                 obj.attr('src', obj.attr('src') );
                 return ;
             }
-                
-            rows = links.eq(index).next( 'table' ).next( 'table' ).next( 'table' ).find('tr');
-            
+
             $('html, body', txt).eq(0).animate({
-                scrollTop: links.eq(index).offset().top
-            }, scrollBaseTime + rows.length * scrollLineTime, function() {
-                setTimeout( MyAnimate, stopTime, obj, txt, links, index+1 );
+                scrollTop: arr[index].position
+            }, arr[index].delayScroll, function() {
+                setTimeout( MyAnimate, arr[index].delayWait, obj, txt, arr, index+1 );
             });
         }
                 
@@ -58,8 +69,42 @@
                 $('td', txt).css( 'font', '16pt/1.2 Arial')
                 $('th', txt).css( 'font', '16pt/1.2 Arial')
                 
-                // scroll to all link objects
-                setTimeout( MyAnimate, stopTime, obj, txt, $('a', txt), 1 );
+                // Cache scroll positions for each class
+                var scrollPositions = new Array();
+                var wndSize = $('#leftFRM').height();
+                var rowHeight = $('td', txt).height() ;
+                var maxRows = Math.floor( wndSize / rowHeight ) ; 
+                var showRows = maxRows - 2 ; 
+                var lastPos = 0 ;
+                var lastRows = 0 ;
+                var n = 0 ;
+                var pos ;
+                $('a', txt).each(function(i){
+                    if( lastRows > maxRows )
+                    {
+                        pos = lastPos ;
+                        rowsLeft = lastRows ;
+                        while( rowsLeft > showRows * 2 ) {
+                            pos += showRows * rowHeight ;
+                            scrollPositions[n++] = new StopPoint( pos, stopTime, scrollBaseTime + showRows * scrollLineTime ) ;
+                            rowsLeft -= showRows ;
+                        }
+
+                        pos = $(this).offset().top ;
+                        scrollPositions[n++] = new StopPoint( pos - maxRows * rowHeight, stopTime, scrollBaseTime + lastRows * scrollLineTime ) ;
+                        scrollPositions[n++] = new StopPoint( pos, stopTime, scrollBaseTime + lastRows * scrollLineTime ) ;
+                    }
+                    else
+                        scrollPositions[n++] = new StopPoint( $(this).offset().top, stopTime, scrollBaseTime + lastRows * scrollLineTime ) ;
+                        
+                    lastPos = $(this).offset().top ;
+                    lastRows = $(this).next( 'table' ).next( 'table' ).next( 'table' ).find('tr').length + 2;   //+2 for the header
+                });
+                // change index 0 because we want to get to the first one rigth away
+                scrollPositions[0].delayScroll = 0 ;
+
+                // start scrolling
+                MyAnimate( obj, txt, scrollPositions, 0 );
             }) ;
         }
         
