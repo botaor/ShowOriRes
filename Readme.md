@@ -29,6 +29,11 @@ No installation should be necessary.
 ## Configuration
 Here are the things that need to be done once you have all the hardware setup. This is necessary since the resolution of the display will differ, and also their ability to display all the information.
 
+### Columns titles
+You should set the column titles to say what classes are shown on the respective column.
+
+The titles are inside div tags right at the start of the `body`.
+
 ### Font size
 The font size must be defined by this page, since MT does not take it into account.
 
