@@ -65,7 +65,7 @@ SOFTWARE.
         /* For debug put the scrolling faster
         scrollBaseTime = 1 * 1000;
         scrollLineTime = 50;
-        stopTime = 2 * 1000;
+        stopTime = 1 * 500;
         */
         
         function StopPoint( category, position, delayWait, delayScroll ) {
@@ -96,8 +96,12 @@ SOFTWARE.
                 
         function prepareIFrame( hdr, obj, url ) {
             obj.on( 'load', function() {
-                // Erase extra elements
                 var txt = obj.contents(); 
+
+                // Add link to the end, so that we can scroll to it
+                $('#navigation', txt).before( '<a id="LAST"></a>' );
+
+                // Erase extra elements
                 $('#navigation', txt).remove();
                 $('#reporttop', txt).remove();
                 
