@@ -2,12 +2,12 @@
 Page to show orienteering results from OE2010 on a large screen.
 The page will be auto scrolled class by class showing all the results.
 
-Developped by: Rui Bot√£o - rui@ruibotao.com
-Version: 01.00
+Developed by: Rui Bot„o - rui@ruibotao.com
+Version: 01.01
 Home Page: https://github.com/botaor/ShowOriRes
 License: MIT License (MIT)
 
-Copyright (c) 2015 Rui Jorge Bot√£o
+Copyright (c) 2018 Rui Jorge Bot„o
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,7 @@ SOFTWARE.
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="utf-8"/>
+    <meta charset="windows-1252"/>
     <meta name="robots" content="none,notranslate"/>
     <title>Show results</title>
 	<style>
@@ -50,7 +50,7 @@ SOFTWARE.
     </div>
     <!-- CUSTOMIZE HERE -->
     <div class="frameHeader">
-        Damas/Women + Promo√ß√£o/Open 
+        Damas/Women + PromoÁ„o/Open 
     </div>
     <div id="leftHdr" class="classHeader">
     </div>
@@ -150,7 +150,7 @@ SOFTWARE.
                     lastPos = $(this).offset().top ;
                     lastRows = $(this).next( 'table' ).next( 'table' ).next( 'table' ).find('tr').length + 2;   //+2 for the header
                 });
-                // change index 0 because we want to get to the first one rigth away
+                // change index 0 because we want to get to the first one right away
                 scrollPositions[0].delayScroll = 0 ;
 
                 // start scrolling
