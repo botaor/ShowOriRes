@@ -108,4 +108,4 @@ Feb 2018
 [jquery]: http://jquery.com/  "JQuery"
 [OE2010]: http://www.sportsoftware.de/ "OE2010"
 [Instructions.md]: Instructions.md "Instructions"
-[License]: License "License"
+[License]: LICENSE "License"
